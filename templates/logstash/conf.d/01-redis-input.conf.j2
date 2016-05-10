@@ -1,0 +1,12 @@
+input {
+  redis {
+    type => "redis-input"
+    host => "{{ logstash_redis_host }}"
+    port => {{ logstash_redis_port }}
+    db => {{ logstash_redis_db }}
+    key => "{{ logstash_redis_key }}"
+    data_type => "{{ logstash_redis_data_type }}"
+    batch_count => {{ logstash_redis_batch_count }}
+    threads => {{ logstash_redis_threads }}
+  }
+}

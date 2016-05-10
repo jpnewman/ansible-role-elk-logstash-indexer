@@ -1,0 +1,44 @@
+output {
+  if [elasticsearch_index] =~ /.+/ {
+    elasticsearch {
+      hosts => {{ logstash_elasticsearch_hosts }}
+      sniffing => true
+      manage_template => false
+      index => "%{[elasticsearch_index]}-%{+YYYY.MM.dd}"
+      document_type => "%{[type]}"
+    }
+  } else if [fields][elasticsearch_index] =~ /.+/ {
+    elasticsearch {
+      hosts => {{ logstash_elasticsearch_hosts }}
+      sniffing => true
+      manage_template => false
+      index => "%{[fields][elasticsearch_index]}-%{+YYYY.MM.dd}"
+      document_type => "%{[type]}"
+    }
+  } else if [index_type] == "beats" {
+    elasticsearch {
+      hosts => {{ logstash_elasticsearch_hosts }}
+      sniffing => true
+      manage_template => false
+      index => "%{[index]}-%{+YYYY.MM.dd}"
+      document_type => "%{[type]}"
+    }
+  }
+  else if [input_type] == "topbeat-input" {
+    elasticsearch {
+      hosts => {{ logstash_elasticsearch_hosts }}
+      sniffing => true
+      manage_template => false
+      index => "topbeat-%{+YYYY.MM.dd}"
+      document_type => "%{[document_type]}"
+    }
+  } else {
+    elasticsearch {
+      hosts => {{ logstash_elasticsearch_hosts }}
+      sniffing => true
+      manage_template => false
+      index => "{{ logstash_elasticsearch_index }}"
+      document_type => "%{[document_type]}"
+    }
+  }
+}

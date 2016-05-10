@@ -1,0 +1,11 @@
+input {
+  redis {
+    type => "topbeat-input"
+    host => "{{ topbeat_redis_host }}"
+    port => {{ topbeat_redis_port }}
+    db => {{ topbeat_redis_db }}
+    key => "{{ topbeat_redis_key }}"
+    data_type => "{{ topbeat_redis_data_type }}"
+    add_field => { "input_type" => "topbeat-input" }
+  }
+}

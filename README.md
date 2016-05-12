@@ -1,5 +1,7 @@
 # jpnewman.elk-logstash-indexer
 
+[![Build Status](https://travis-ci.org/jpnewman/ansible-role-elk-logstash-indexer.svg?branch=master)](https://travis-ci.org/jpnewman/ansible-role-elk-logstash-indexer)
+
 This is a Ansible role to installs [logstash](https://www.elastic.co/products/logstash) indexer
 
 This role is based on role ```logstash``` [https://github.com/rueian/ansible-elk-example.git]() by Rueian

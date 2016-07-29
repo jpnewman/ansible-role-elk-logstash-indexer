@@ -5,7 +5,7 @@
 
 This is a Ansible role to installs [logstash](https://www.elastic.co/products/logstash) indexer
 
-This role is based on role ```logstash``` <https://github.com/rueian/ansible-elk-example.git> by Rueian
+This role is based on role ```logstash``` <https://github.com/rueian/ansible-elk-example> by Rueian
 
 The logstash indexer creates the following logstash configuration files: -
 

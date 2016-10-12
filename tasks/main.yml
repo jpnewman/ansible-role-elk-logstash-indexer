@@ -59,3 +59,4 @@
   become: yes
   command: service logstash configtest
   register: result
+  changed_when: False

@@ -22,7 +22,9 @@ Ansible 2.x
 
 |Variable|Description|Default|
 |---|---|---|
-|```logstash_repo_version```||2.3|
+|```logstash_repo_version```||5.x|
+|```elasticsearch_gpg_key_url```||https://artifacts.elastic.co/GPG-KEY-elasticsearch|
+|```logstash_apt_repository```||```deb https://artifacts.elastic.co/packages/{{ logstash_repo_version }}/apt stable main```|
 |```logstash_listen_port```||5043|
 |```logstash_redis_host```||localhost|
 |```logstash_redis_port```||6379|
@@ -46,6 +48,7 @@ Ansible 2.x
 |```ssl_cert```||logstash-forwarder.crt|
 |```ssl_key```||logstash-forwarder.key|
 |```apt_cache_valid_time```||600|
+|```check_logstash_config```||false|
 
 ## Dependencies
 

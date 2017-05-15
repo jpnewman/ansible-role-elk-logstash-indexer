@@ -1,21 +1,30 @@
 ---
 # tasks file for jpnewman.elk-logstash-indexer
 - name: Import Elastic GPG Key
-  apt_key: url=http://packages.elastic.co/GPG-KEY-elasticsearch state=present
+  apt_key: url="{{ elasticsearch_gpg_key_url }}" state=present
 
 - name: Add Logstash Repo into source list
   apt_repository:
-    repo: 'deb http://packages.elastic.co/logstash/{{ logstash_repo_version }}/debian stable main'
+    repo: "{{ logstash_apt_repository }}"
 #    filename: logstash
     state: present
     update_cache: yes
 
 - name: Install Logstash
-  apt: name=logstash state=present update_cache=yes cache_valid_time={{ apt_cache_valid_time }}
+  apt:
+    name: logstash
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_valid_time }}"
   notify: restart logstash
 
 - name: Config Upstart
-  template: src=upstart/logstash.j2 dest=/etc/default/logstash owner=root group=root mode=0644
+  template:
+    src: upstart/logstash.j2
+    dest: /etc/default/logstash
+    owner: root
+    group: root
+    mode: 0644
   notify: restart logstash
 
 # SSL Cert
@@ -35,7 +44,12 @@
 
 # Config
 - name: Copy indexer templates
-  template: src={{item.src}} dest={{item.dest}} owner=logstash group=logstash mode=0644
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: logstash
+    group: logstash
+    mode: 0644
   with_items:
      - { src: 'logstash/conf.d/01-redis-input.conf.j2', dest: '/etc/logstash/conf.d/01-redis-input.conf' }
      - { src: 'logstash/conf.d/02-topbeat-input.conf.j2', dest: '/etc/logstash/conf.d/02-topbeat-input.conf' }
@@ -44,7 +58,12 @@
     - restart logstash
 
 - name: Copy shipper debug templates, if needed
-  template: src=logstash/conf.d/31-stdout-output.conf.j2 dest=/etc/logstash/conf.d/31-stdout-output.conf owner=logstash group=logstash mode=0644
+  template:
+    src: logstash/conf.d/31-stdout-output.conf.j2
+    dest: /etc/logstash/conf.d/31-stdout-output.conf
+    owner: logstash
+    group: logstash
+    mode: 0644
   when: logstash_debug
   notify:
     - restart logstash
@@ -57,6 +76,7 @@
 
 - name: Check logstash config
   become: yes
-  command: service logstash configtest
+  command: /usr/share/logstash/bin/logstash -t -f /etc/logstash/conf.d --path.settings=/etc/logstash/
   register: result
+  when: check_logstash_config
   changed_when: False
